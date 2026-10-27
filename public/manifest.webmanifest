@@ -1,0 +1,17 @@
+{
+  "name": "Luanti Formspec Studio",
+  "short_name": "FormspecStudio",
+  "description": "Visual WYSIWYG Formspec Editor, Formspec v7 Responsive Layout Engine & Lua Mod Generator for Luanti",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#121214",
+  "theme_color": "#059669",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

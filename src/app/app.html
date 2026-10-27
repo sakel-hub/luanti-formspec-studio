@@ -1,0 +1,90 @@
+<div class="h-screen w-screen flex flex-col bg-[#121214] text-zinc-100 overflow-hidden">
+  <!-- Top Global Header -->
+  <app-header></app-header>
+
+  <!-- Main Multi-Pane / Mobile Adaptive Workspace -->
+  <main class="flex-1 min-h-0 relative flex overflow-hidden">
+    <!-- DESKTOP / TABLET WORKSPACE (md:flex) -->
+    <div class="hidden md:flex w-full h-full overflow-hidden">
+      <!-- Left: Widget Palette -->
+      <aside class="w-64 h-full shrink-0">
+        <app-palette></app-palette>
+      </aside>
+
+      <!-- Center: Formspec Canvas or Code View -->
+      <section class="flex-1 h-full min-w-0 relative">
+        @if (store.activeTab() === 'code') {
+          <app-code-view></app-code-view>
+        } @else {
+          <app-canvas></app-canvas>
+        }
+      </section>
+
+      <!-- Right: Property Inspector -->
+      <aside class="w-76 h-full shrink-0">
+        <app-inspector></app-inspector>
+      </aside>
+    </div>
+
+    <!-- MOBILE WORKSPACE (< md) -->
+    <div class="flex md:hidden w-full h-full overflow-hidden flex-col">
+      <div class="flex-1 w-full h-full min-h-0 relative">
+        @if (store.activeTab() === 'canvas') {
+          <app-canvas></app-canvas>
+        } @else if (store.activeTab() === 'palette') {
+          <app-palette></app-palette>
+        } @else if (store.activeTab() === 'inspector') {
+          <app-inspector></app-inspector>
+        } @else if (store.activeTab() === 'code') {
+          <app-code-view></app-code-view>
+        }
+      </div>
+
+      <!-- Mobile Bottom Navigation Bar -->
+      <nav class="h-14 bg-[#18181c] border-t border-[#282830] flex items-center justify-around px-2 shrink-0 select-none text-[10px]">
+        <button
+          (click)="store.setActiveTab('canvas')"
+          [class.text-emerald-400]="store.activeTab() === 'canvas'"
+          [class.text-zinc-400]="store.activeTab() !== 'canvas'"
+          class="flex flex-col items-center gap-1 font-medium transition active:scale-95"
+        >
+          <svg lucideLayout class="w-4 h-4"></svg>
+          <span>Canvas</span>
+        </button>
+
+        <button
+          (click)="store.setActiveTab('palette')"
+          [class.text-emerald-400]="store.activeTab() === 'palette'"
+          [class.text-zinc-400]="store.activeTab() !== 'palette'"
+          class="flex flex-col items-center gap-1 font-medium transition active:scale-95"
+        >
+          <svg lucidePlus class="w-4 h-4"></svg>
+          <span>Widgets</span>
+        </button>
+
+        <button
+          (click)="store.setActiveTab('inspector')"
+          [class.text-emerald-400]="store.activeTab() === 'inspector'"
+          [class.text-zinc-400]="store.activeTab() !== 'inspector'"
+          class="flex flex-col items-center gap-1 font-medium transition active:scale-95"
+        >
+          <svg lucideSliders class="w-4 h-4"></svg>
+          <span>Properties</span>
+        </button>
+
+        <button
+          (click)="store.setActiveTab('code')"
+          [class.text-emerald-400]="store.activeTab() === 'code'"
+          [class.text-zinc-400]="store.activeTab() !== 'code'"
+          class="flex flex-col items-center gap-1 font-medium transition active:scale-95"
+        >
+          <svg lucideCode class="w-4 h-4"></svg>
+          <span>Lua Code</span>
+        </button>
+      </nav>
+    </div>
+  </main>
+
+  <!-- Modal Dialogs -->
+  <app-template-modal></app-template-modal>
+</div>
