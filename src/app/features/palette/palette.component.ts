@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EditorStore } from '../../core/state/editor.store';
 import { FormspecElementType, WidgetMetadata } from '../../core/models/formspec.models';
-import { LucidePlus, LucideSearch, LucideInfo, LucideSparkles } from '@lucide/angular';
+import { LucidePlus, LucideSearch, LucideInfo, LucideSparkles, LucideX } from '@lucide/angular';
 
 @Component({
   selector: 'app-palette',
   standalone: true,
-  imports: [CommonModule, FormsModule, LucidePlus, LucideSearch, LucideInfo, LucideSparkles],
+  imports: [CommonModule, FormsModule, LucidePlus, LucideSearch, LucideInfo, LucideSparkles, LucideX],
   template: `
     <div class="h-full flex flex-col bg-[#18181c] select-none overflow-hidden">
       <!-- Section Header -->
@@ -34,11 +34,23 @@ import { LucidePlus, LucideSearch, LucideInfo, LucideSparkles } from '@lucide/an
           <svg lucideSearch class="w-3.5 h-3.5 text-zinc-500 absolute left-2.5 pointer-events-none"></svg>
           <input
             type="text"
-            [(ngModel)]="searchQuery"
+            [ngModel]="searchQuery()"
+            (ngModelChange)="searchQuery.set($event)"
             placeholder="Search widgets (e.g. hypertip, model, list)..."
             aria-label="Search formspec widgets"
-            class="w-full bg-zinc-900 border border-zinc-700/80 rounded-lg pl-8 pr-2.5 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition"
+            class="w-full bg-zinc-900 border border-zinc-700/80 rounded-lg pl-8 pr-8 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition"
           />
+          @if (searchQuery()) {
+            <button
+              type="button"
+              (click)="searchQuery.set('')"
+              class="absolute right-2 text-zinc-400 hover:text-zinc-200 p-0.5 rounded transition"
+              title="Clear search"
+              aria-label="Clear search"
+            >
+              <svg lucideX class="w-3.5 h-3.5"></svg>
+            </button>
+          }
         </div>
 
         <!-- Category Filter Tabs -->
@@ -63,7 +75,7 @@ import { LucidePlus, LucideSearch, LucideInfo, LucideSparkles } from '@lucide/an
       <div class="flex-1 overflow-y-auto custom-scrollbar p-2.5 space-y-2 min-h-0">
         @if (filteredWidgets().length === 0) {
           <div class="p-6 text-center text-zinc-500 text-xs">
-            No widgets match "{{ searchQuery }}"
+            No widgets match "{{ searchQuery() }}"
           </div>
         }
 
@@ -135,8 +147,8 @@ import { LucidePlus, LucideSearch, LucideInfo, LucideSparkles } from '@lucide/an
 export class PaletteComponent {
   readonly store = inject(EditorStore);
 
-  searchQuery = '';
-  selectedCategory = signal<string>('all');
+  readonly searchQuery = signal<string>('');
+  readonly selectedCategory = signal<string>('all');
 
   readonly categories = [
     { id: 'all', label: 'All' },
@@ -528,7 +540,7 @@ export class PaletteComponent {
   ];
 
   readonly filteredWidgets = computed(() => {
-    const q = this.searchQuery.toLowerCase().trim();
+    const q = this.searchQuery().toLowerCase().trim();
     const cat = this.selectedCategory();
 
     return this.widgets.filter((w) => {
