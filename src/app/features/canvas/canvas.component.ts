@@ -330,8 +330,11 @@ interface AltDistanceInfo {
                           <input
                             [type]="node.type === 'pwdfield' ? 'password' : 'text'"
                             [value]="node.defaultVal || ''"
-                            [disabled]="!store.isInteractiveMode()"
+                            [disabled]="!store.isInteractiveMode() || node.editable === false"
+                            [readOnly]="node.editable === false"
                             (input)="handleSimulatorInputChange(node, $event)"
+                            [class.opacity-60]="node.editable === false"
+                            [class.cursor-not-allowed]="node.editable === false"
                             class="h-7 w-full luanti-field px-2 rounded text-xs text-zinc-200 disabled:opacity-90 disabled:cursor-grab focus:outline-emerald-500 font-mono"
                           />
                         </div>
@@ -344,8 +347,11 @@ interface AltDistanceInfo {
                             <span class="text-[10px] text-zinc-400 mb-0.5">{{ node.label }}</span>
                           }
                           <textarea
-                            [disabled]="!store.isInteractiveMode()"
+                            [disabled]="!store.isInteractiveMode() || node.editable === false"
+                            [readOnly]="node.editable === false"
                             (input)="handleSimulatorInputChange(node, $event)"
+                            [class.opacity-60]="node.editable === false"
+                            [class.cursor-not-allowed]="node.editable === false"
                             class="flex-1 w-full luanti-field p-2 rounded text-xs text-zinc-300 font-mono overflow-auto resize-none disabled:opacity-90 disabled:cursor-grab focus:outline-emerald-500"
                             >{{ node.defaultVal || '' }}</textarea>
                         </div>
@@ -354,8 +360,10 @@ interface AltDistanceInfo {
                       <!-- 5. Checkbox Render -->
                       @else if (node.type === 'checkbox') {
                         <div
-                          (click)="handleSimulatorCheckboxToggle(node)"
-                          [class.cursor-pointer]="store.isInteractiveMode()"
+                          (click)="node.editable !== false && handleSimulatorCheckboxToggle(node)"
+                          [class.cursor-pointer]="store.isInteractiveMode() && node.editable !== false"
+                          [class.opacity-60]="node.editable === false"
+                          [class.cursor-not-allowed]="node.editable === false"
                           class="w-full h-full flex items-center gap-2"
                         >
                           <div
@@ -402,7 +410,8 @@ interface AltDistanceInfo {
                         </div>
                       } @else if (node.type === 'vertlabel') {
                         <div
-                          class="w-full h-full flex flex-col justify-center items-center text-xs font-mono text-zinc-300 font-bold select-none tracking-widest uppercase"
+                          class="w-full h-full flex flex-col justify-center items-center text-xs font-mono font-bold select-none tracking-widest uppercase"
+                          [style.color]="node.color || '#d4d4d8'"
                         >
                           {{ node.label || 'VERTICAL' }}
                         </div>
@@ -523,7 +532,7 @@ interface AltDistanceInfo {
                               <div
                                 class="luanti-slot w-full h-full aspect-square flex items-center justify-center relative rounded-[2px] transition hover:brightness-125"
                                 [style.background-image]="
-                                  'url(' + getTextureUrl('gui_hb_bg.png') + ')'
+                                  'url(' + getSlotBackgroundTexture() + ')'
                                 "
                                 style="background-size: 100% 100%; image-rendering: pixelated;"
                               >
@@ -538,10 +547,11 @@ interface AltDistanceInfo {
                         </div>
                       }
 
-                      <!-- 12. Non-visual Metadata (listring, listcolors, allow_close, set_focus) -->
+                      <!-- 12. Non-visual Metadata (listring, listcolors, listimages, allow_close, set_focus) -->
                       @else if (
                         node.type === 'listring' ||
                         node.type === 'listcolors' ||
+                        node.type === 'listimages' ||
                         node.type === 'allow_close' ||
                         node.type === 'set_focus'
                       ) {
@@ -1120,6 +1130,14 @@ export class CanvasComponent {
 
   getTextureUrl(name?: string): string {
     return resolveTextureUrl(name);
+  }
+
+  getSlotBackgroundTexture(): string {
+    const listImgNode = this.store.ast().children.find((c) => c.type === 'listimages');
+    if (listImgNode?.texture) {
+      return this.getTextureUrl(listImgNode.texture);
+    }
+    return this.getTextureUrl('gui_hb_bg.png');
   }
 
   getEntries(obj: Record<string, string>): Array<{ key: string; val: string }> {

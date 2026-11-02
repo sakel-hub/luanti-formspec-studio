@@ -113,4 +113,54 @@ describe('FormspecParserService', () => {
     expect(parsed.children.some((c) => c.type === 'model')).toBe(true);
     expect(parsed.children.some((c) => c.type === 'button_url')).toBe(true);
   });
+
+  it('supports Luanti 5.18.0 features: listimages and editable=false styles', () => {
+    const ast: FormspecAST = {
+      version: 7,
+      size: { w: 10, h: 8 },
+      styles: [],
+      children: [
+        {
+          id: 'li1',
+          type: 'listimages',
+          x: 0,
+          y: 0,
+          w: 0,
+          h: 0,
+          texture: 'gui_slot.png',
+          pressedTexture: 'gui_slot_hover.png',
+        },
+        {
+          id: 'f1',
+          type: 'field',
+          x: 1,
+          y: 2,
+          w: 4,
+          h: 1,
+          name: 'read_only_status',
+          label: 'System Status',
+          defaultVal: 'ONLINE',
+          editable: false,
+        },
+      ],
+    };
+
+    const serialized = service.serialize(ast);
+    // Auto-promotes version to 12 for 5.18 features
+    expect(serialized).toContain('formspec_version[12]');
+    expect(serialized).toContain('listimages[gui_slot.png;gui_slot_hover.png]');
+    expect(serialized).toContain('style[read_only_status;editable=false]');
+    expect(serialized).toContain('field[1,2;4,1;read_only_status;System Status;ONLINE]');
+
+    const parsed = service.parse(serialized);
+    expect(parsed.version).toBe(12);
+    const listImgNode = parsed.children.find((c) => c.type === 'listimages');
+    expect(listImgNode).toBeDefined();
+    expect(listImgNode?.texture).toBe('gui_slot.png');
+    expect(listImgNode?.pressedTexture).toBe('gui_slot_hover.png');
+
+    const fieldNode = parsed.children.find((c) => c.name === 'read_only_status');
+    expect(fieldNode).toBeDefined();
+    expect(fieldNode?.editable).toBe(false);
+  });
 });

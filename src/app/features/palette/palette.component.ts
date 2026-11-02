@@ -17,7 +17,7 @@ import { LucidePlus, LucideSearch, LucideInfo, LucideSparkles } from '@lucide/an
           <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-200 flex items-center gap-1.5">
             <span>Widget Palette</span>
             <span class="px-1.5 py-0.2 bg-emerald-950 text-emerald-400 border border-emerald-800 rounded text-[9px] font-mono">
-              5.18-rc1
+              5.18
             </span>
           </h2>
           <p class="text-[10px] text-zinc-400">Click to add to canvas or drag onto workspace</p>
@@ -318,12 +318,12 @@ export class PaletteComponent {
     {
       type: 'listimages',
       name: 'List Images',
-      syntax: 'listimages[]',
-      description: 'Custom slot background textures and hover overlays',
-      formspecVersion: 1,
-      luantiVersion: '0.4.x+',
+      syntax: 'listimages[<slot_bgimg_normal>;<slot_bgimg_hover>]',
+      description: 'Custom slot background textures and hover overlays for inventory slots',
+      formspecVersion: 12,
+      luantiVersion: '5.18.0+',
       category: 'inventories',
-      notes: 'Uses custom images instead of flat slot colors',
+      notes: 'Added in Luanti 5.18.0 (Formspec v12) to replace flat slot colors with textured images',
     },
 
     // Visuals & 3D Models

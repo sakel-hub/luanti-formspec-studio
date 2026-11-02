@@ -60,6 +60,7 @@ export interface FormspecNode {
   dropdownItems?: string[];
   selectedIdx?: number;
   checked?: boolean;
+  editable?: boolean;
   mesh?: string;
   meshTextures?: string;
   meshRotation?: string;

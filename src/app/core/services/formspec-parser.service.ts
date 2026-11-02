@@ -26,7 +26,11 @@ export class FormspecParserService {
     const lines: string[] = [];
 
     // Header directives
-    lines.push(`formspec_version[${ast.version || 7}]`);
+    const hasV12Feature =
+      ast.children.some((c) => c.type === 'listimages' || c.editable === false) ||
+      ast.styles?.some((s) => s.properties && s.properties['editable']);
+    const effectiveVersion = hasV12Feature ? Math.max(ast.version || 7, 12) : (ast.version || 7);
+    lines.push(`formspec_version[${effectiveVersion}]`);
     lines.push(`size[${ast.size.w},${ast.size.h}${ast.size.fixed ? ',true' : ''}]`);
 
     if (ast.padding) {
@@ -71,6 +75,9 @@ export class FormspecParserService {
 
   private serializeNodes(nodes: FormspecNode[], lines: string[]): void {
     for (const node of nodes) {
+      if (node.name && node.editable === false) {
+        lines.push(`style[${node.name};editable=false]`);
+      }
       switch (node.type) {
         case 'button':
         case 'button_exit': {
@@ -218,7 +225,9 @@ export class FormspecParserService {
         }
 
         case 'listimages': {
-          lines.push(`listimages[${node.texture || 'gui_slot.png'};gui_slot_hover.png]`);
+          const normal = node.texture || '';
+          const hover = node.pressedTexture || '';
+          lines.push(`listimages[${normal};${hover}]`);
           break;
         }
 
@@ -441,6 +450,8 @@ export class FormspecParserService {
         case 'pwdfield': {
           const coords = this.splitCoords(args[0]);
           const dims = this.splitCoords(args[1]);
+          const name = args[2] || '';
+          const isReadOnly = ast.styles.some((s) => s.selector === name && s.properties['editable'] === 'false');
           ast.children.push({
             id: `node-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
             type: tag as 'field' | 'pwdfield',
@@ -448,9 +459,10 @@ export class FormspecParserService {
             y: coords.y,
             w: dims.x,
             h: dims.y,
-            name: args[2] || '',
+            name,
             label: this.unescape(args[3] || ''),
             defaultVal: this.unescape(args[4] || ''),
+            editable: isReadOnly ? false : undefined,
           });
           break;
         }
@@ -458,6 +470,8 @@ export class FormspecParserService {
         case 'textarea': {
           const coords = this.splitCoords(args[0]);
           const dims = this.splitCoords(args[1]);
+          const name = args[2] || '';
+          const isReadOnly = ast.styles.some((s) => s.selector === name && s.properties['editable'] === 'false');
           ast.children.push({
             id: `node-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
             type: 'textarea',
@@ -465,15 +479,18 @@ export class FormspecParserService {
             y: coords.y,
             w: dims.x,
             h: dims.y,
-            name: args[2] || '',
+            name,
             label: this.unescape(args[3] || ''),
             defaultVal: this.unescape(args[4] || ''),
+            editable: isReadOnly ? false : undefined,
           });
           break;
         }
 
         case 'checkbox': {
           const coords = this.splitCoords(args[0]);
+          const name = args[1] || '';
+          const isReadOnly = ast.styles.some((s) => s.selector === name && s.properties['editable'] === 'false');
           ast.children.push({
             id: `node-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
             type: 'checkbox',
@@ -481,9 +498,10 @@ export class FormspecParserService {
             y: coords.y,
             w: 3,
             h: 0.8,
-            name: args[1] || '',
+            name,
             label: this.unescape(args[2] || ''),
             checked: args[3] === 'true',
+            editable: isReadOnly ? false : undefined,
           });
           break;
         }
@@ -783,6 +801,89 @@ export class FormspecParserService {
             dropdownItems: rawItems,
             selectedIdx: Math.max(sel, 0),
           });
+          break;
+        }
+
+        case 'listimages': {
+          ast.children.push({
+            id: `node-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+            type: 'listimages',
+            x: 0,
+            y: 0,
+            w: 0,
+            h: 0,
+            texture: args[0] || '',
+            pressedTexture: args[1] || '',
+          });
+          break;
+        }
+
+        case 'listcolors': {
+          ast.children.push({
+            id: `node-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+            type: 'listcolors',
+            x: 0,
+            y: 0,
+            w: 0,
+            h: 0,
+            color: args[0] || '#333333',
+          });
+          break;
+        }
+
+        case 'listring': {
+          ast.children.push({
+            id: `node-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+            type: 'listring',
+            x: 0,
+            y: 0,
+            w: 0,
+            h: 0,
+            inventoryLocation: args[0] || 'current_name',
+            inventoryList: args[1] || 'main',
+          });
+          break;
+        }
+
+        case 'tabheader': {
+          const coords = this.splitCoords(args[0]);
+          const rawItems = (args[2] || '').split(',').map((s) => this.unescape(s));
+          const sel = parseInt(args[3] || '1', 10) - 1;
+          ast.children.push({
+            id: `node-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+            type: 'tabheader',
+            x: coords.x,
+            y: coords.y,
+            w: 6,
+            h: 0.8,
+            name: args[1] || 'tabs',
+            dropdownItems: rawItems,
+            selectedIdx: Math.max(sel, 0),
+          });
+          break;
+        }
+
+        case 'style':
+        case 'style_type': {
+          const selector = args[0] || '';
+          const properties: Record<string, string> = {};
+          for (let i = 1; i < args.length; i++) {
+            const eqIdx = args[i].indexOf('=');
+            if (eqIdx !== -1) {
+              const k = args[i].substring(0, eqIdx).trim();
+              const v = args[i].substring(eqIdx + 1).trim();
+              if (k) properties[k] = v;
+            }
+          }
+          if (selector && Object.keys(properties).length > 0) {
+            ast.styles.push({ selector, properties });
+            if (properties['editable'] === 'false') {
+              const targetNode = ast.children.find((c) => c.name === selector);
+              if (targetNode) {
+                targetNode.editable = false;
+              }
+            }
+          }
           break;
         }
 

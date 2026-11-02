@@ -55,7 +55,7 @@ export function isPropertyMandatory(type: FormspecElementType, prop: string): bo
     case 'w':
     case 'h':
       // All visual elements require valid width and height except 0-sized meta elements
-      return !['listring', 'listcolors', 'allow_close', 'set_focus'].includes(type);
+      return !['listring', 'listcolors', 'listimages', 'allow_close', 'set_focus'].includes(type);
 
     default:
       return false;
@@ -335,5 +335,18 @@ export const PROPERTY_DOCS: Record<string, PropertyDoc> = {
     description: 'Orientation of scrollbar or scroll container (vertical or horizontal).',
     luantiVersion: '5.10.0+',
     defaultVal: 'vertical',
+  },
+  editable: {
+    title: 'Editable (editable)',
+    syntax: 'style[name;editable=false] / style_type[type;editable=false]',
+    description: 'Controls whether input widgets (field, textarea, checkbox) can be interactively edited by the player (Luanti 5.18+ / Formspec v12).',
+    luantiVersion: '5.18.0+ (v12)',
+    defaultVal: 'true',
+  },
+  pressedTexture: {
+    title: 'Hover / Pressed Texture',
+    syntax: 'texture name',
+    description: 'Image texture for hovered state in listimages[] or pressed state in image_button[].',
+    luantiVersion: '5.18.0+',
   },
 };

@@ -39,9 +39,9 @@ A modern, high-performance, offline-first Progressive Web App (PWA) built with *
 - **Slot-Based Virtual Canvas**: True-to-engine 1:1 real coordinate system ($1.0 \text{ unit} = 1 \text{ standard inventory slot}$).
 - **Configurable Snap Grid**: Instant snapping to `0.1s`, `0.25s`, `0.5s`, or `1.0s` slot increments.
 - **Dynamic Pan & Zoom**: Smooth mouse wheel zooming and touch drag panning.
-- **Full Luanti v2+ Widget Suite**:
-  - **Inventories**: `list[]`, `listring[]`, `listcolors[]` with square slot proportions matching real Luanti engine optics.
-  - **Inputs & Triggers**: `button[]`, `button_exit[]`, `image_button[]`, `item_image_button[]`, `field[]`, `pwdfield[]`, `textarea[]`, `checkbox[]`, `dropdown[]`.
+- **Full Luanti v2+ to v12 Widget Suite**:
+  - **Inventories**: `list[]`, `listring[]`, `listcolors[]`, and new Luanti 5.18 `listimages[]` textured slot backgrounds.
+  - **Inputs & Triggers**: `button[]`, `button_exit[]`, `image_button[]`, `item_image_button[]`, `field[]`, `pwdfield[]`, `textarea[]`, `checkbox[]`, `dropdown[]` with Luanti 5.18 `editable=false` read-only locking.
   - **Containers & Hierarchy**: `container[]` offset trees and `scroll_container[]` clipped regions with linked `scrollbar[]`.
   - **Framing & Visuals**: `box[]`, `background9[]` (9-slice stretch), `image[]`, `item_image[]`, `hypertext[]`, `model[]`.
   - **CSS-like Styling**: Direct authoring of `style[]` and `style_type[]` selectors (`bgcolor`, `textcolor`, `border`, `content_offset`).
@@ -96,6 +96,7 @@ Choose from pre-built, battle-tested Luanti templates in the **Template Picker**
 6. **Server Admin & Moderation Panel**: Tabheader navigation, online player list, moderation triggers (Kick, Ban, Freeze), and server announcement broadcast field.
 7. **NPC Dialogue & Quest Trader**: Rich `hypertext[]` monologue box with inline styling, branching choice buttons, and barter inventory slots.
 8. **NodeCore Minimalist Dark Theme**: Transparent backdrop (`bgcolor[;true]`), custom `style_type[button;...]` themes, and 9-slice panel frames.
+9. **Luanti 5.18 Textured Vault & Terminal**: Custom textured slot backgrounds with `listimages[]`, inventory transfer listrings, and read-only `editable=false` security status terminal.
 
 ---
 

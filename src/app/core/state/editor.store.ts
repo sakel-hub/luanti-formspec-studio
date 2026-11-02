@@ -514,7 +514,8 @@ export class EditorStore {
         break;
 
       case 'listimages':
-        newNode.texture = 'gui_slot.png';
+        newNode.texture = 'gui_hb_bg.svg';
+        newNode.pressedTexture = 'gui_furnace_arrow_bg.svg';
         newNode.w = 2;
         newNode.h = 0.5;
         break;

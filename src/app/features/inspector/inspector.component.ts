@@ -1116,10 +1116,10 @@ import {
                 </div>
               }
 
-              <!-- Box Color / Background Color -->
-              @if (node.type === 'box' || node.type === 'listcolors') {
+              <!-- Box Color / Background Color / Label Color -->
+              @if (node.type === 'box' || node.type === 'listcolors' || node.type === 'vertlabel' || node.type === 'label') {
                 <div>
-                  <label class="block text-[10px] text-zinc-400 mb-1">Hex Color</label>
+                  <label class="block text-[10px] text-zinc-400 mb-1">Color (Hex)</label>
                   <div class="flex items-center gap-2">
                     <input
                       type="color"
@@ -1133,6 +1133,70 @@ import {
                       (ngModelChange)="updateProp('color', $event)"
                       class="flex-1 bg-zinc-900 border border-zinc-700 rounded-lg px-2.5 py-1 text-zinc-200 font-mono text-xs"
                     />
+                  </div>
+                </div>
+              }
+
+              <!-- Editable Toggle (Luanti 5.18+ / Formspec v12) -->
+              @if (['field', 'pwdfield', 'textarea', 'checkbox', 'dropdown'].includes(node.type)) {
+                <div class="flex items-center justify-between p-2.5 bg-zinc-900/60 rounded-lg border border-zinc-800">
+                  <div>
+                    <div class="text-xs text-zinc-200 font-medium flex items-center gap-1.5">
+                      <span>Editable (editable)</span>
+                      <span class="text-[9px] font-mono px-1 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">v12</span>
+                    </div>
+                    <div class="text-[10px] text-zinc-500">Allow user input (set false for read-only status widgets)</div>
+                  </div>
+                  <input
+                    type="checkbox"
+                    [ngModel]="node.editable !== false"
+                    (ngModelChange)="updateProp('editable', $event)"
+                    class="w-4 h-4 accent-emerald-500 rounded cursor-pointer"
+                  />
+                </div>
+              }
+
+              <!-- List Images (Luanti 5.18+ / Formspec v12) -->
+              @if (node.type === 'listimages') {
+                <div class="p-3 bg-emerald-950/20 border border-emerald-800/40 rounded-xl space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">
+                      Inventory Slot Textures
+                    </span>
+                    <span class="text-[9px] font-mono px-1 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">
+                      Luanti 5.18+
+                    </span>
+                  </div>
+
+                  <div>
+                    <label class="block text-[10px] text-zinc-400 mb-1">Normal Slot Background</label>
+                    <input
+                      type="text"
+                      [ngModel]="node.texture"
+                      (ngModelChange)="updateProp('texture', $event)"
+                      placeholder="e.g. gui_hb_bg.svg or gui_slot.png"
+                      class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-2.5 py-1.5 text-zinc-200 font-mono text-xs focus:border-emerald-500 focus:outline-none"
+                    />
+                    <div class="flex gap-1 mt-1 flex-wrap">
+                      <button (click)="updateProp('texture', 'gui_hb_bg.svg')" class="text-[9px] px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-400 font-mono">gui_hb_bg.svg</button>
+                      <button (click)="updateProp('texture', 'gui_formspec_bg.svg')" class="text-[9px] px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-400 font-mono">gui_formspec_bg.svg</button>
+                      <button (click)="updateProp('texture', 'default_wood.svg')" class="text-[9px] px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-400 font-mono">default_wood.svg</button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="block text-[10px] text-zinc-400 mb-1">Hovered Slot Background</label>
+                    <input
+                      type="text"
+                      [ngModel]="node.pressedTexture"
+                      (ngModelChange)="updateProp('pressedTexture', $event)"
+                      placeholder="e.g. gui_furnace_arrow_bg.svg or slot_hover.png"
+                      class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-2.5 py-1.5 text-zinc-200 font-mono text-xs focus:border-emerald-500 focus:outline-none"
+                    />
+                    <div class="flex gap-1 mt-1 flex-wrap">
+                      <button (click)="updateProp('pressedTexture', 'gui_furnace_arrow_bg.svg')" class="text-[9px] px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-400 font-mono">gui_furnace_arrow_bg.svg</button>
+                      <button (click)="updateProp('pressedTexture', 'bubble.svg')" class="text-[9px] px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-400 font-mono">bubble.svg</button>
+                    </div>
                   </div>
                 </div>
               }
@@ -1340,19 +1404,19 @@ import {
                 <p class="text-[10px] text-zinc-400 mt-0.5">Select any element on canvas or choose from Layout Tree</p>
               </div>
 
-              <!-- Luanti 5.18.0-rc1 Status -->
+              <!-- Luanti 5.18.0 Status -->
               <div class="p-3 bg-emerald-950/30 border border-emerald-800/50 rounded-xl space-y-1.5">
                 <div class="flex items-center justify-between">
                   <span class="text-emerald-400 font-semibold text-xs flex items-center gap-1">
                     <svg lucideSparkles class="w-3.5 h-3.5"></svg>
-                    <span>Luanti 5.18.0-rc1 Engine</span>
+                    <span>Luanti 5.18.0 Engine</span>
                   </span>
                   <span class="px-1.5 py-0.2 bg-emerald-900 text-emerald-300 rounded text-[10px] font-mono">
                     v{{ store.ast().version || 7 }}
                   </span>
                 </div>
                 <p class="text-[11px] text-zinc-300 leading-relaxed">
-                  Real coordinates, 3D mesh models, hypertips, and 9-slice styling supported.
+                  Real coordinates, 3D mesh models, hypertips, listimages, and editable styles supported.
                 </p>
               </div>
 

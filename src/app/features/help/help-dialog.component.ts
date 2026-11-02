@@ -210,10 +210,18 @@ container_end[]</pre
 
                   <div class="p-3 rounded-lg bg-zinc-900/40 border border-zinc-800/80 space-y-1">
                     <div class="font-semibold text-zinc-200 flex items-center justify-between">
-                      <span>style & style_type</span>
-                      <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950 px-1.5 py-0.5 rounded">v5.1+</span>
+                      <span>listimages (Textured Slots)</span>
+                      <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950 px-1.5 py-0.5 rounded">v5.18+ (v12)</span>
                     </div>
-                    <p class="text-zinc-400">CSS-like styling for formspec elements: custom 9-slice backgrounds, border colors, sounds, and states.</p>
+                    <p class="text-zinc-400">Custom background and hover textures for inventory slots (replaces flat solid colors).</p>
+                  </div>
+
+                  <div class="p-3 rounded-lg bg-zinc-900/40 border border-zinc-800/80 space-y-1">
+                    <div class="font-semibold text-zinc-200 flex items-center justify-between">
+                      <span>editable style</span>
+                      <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950 px-1.5 py-0.5 rounded">v5.18+ (v12)</span>
+                    </div>
+                    <p class="text-zinc-400">Controls interactive input access (read-only locking) for text fields, textareas, and checkboxes.</p>
                   </div>
                 </div>
               </div>
