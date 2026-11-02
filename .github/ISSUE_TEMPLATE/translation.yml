@@ -65,3 +65,4 @@ body:
           required: true
         - label: I agree to license these translation contributions under the project's MIT license.
           required: true
+
