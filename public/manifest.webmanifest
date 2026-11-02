@@ -1,17 +1,37 @@
 {
   "name": "Luanti Formspec Studio",
   "short_name": "FormspecStudio",
-  "description": "Visual WYSIWYG Formspec Editor, Formspec v7 Responsive Layout Engine & Lua Mod Generator for Luanti",
+  "id": "/",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#121214",
   "theme_color": "#059669",
+  "description": "Visual WYSIWYG Formspec Editor, Formspec v7 Responsive Layout Engine & Lua Mod Generator for Luanti",
+  "categories": ["developer", "utilities", "design", "productivity"],
   "icons": [
     {
       "src": "logo.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Templates Library",
+      "short_name": "Templates",
+      "description": "Browse and instantiate Luanti Formspec templates",
+      "url": "./?action=templates",
+      "icons": [{ "src": "logo.svg", "sizes": "any" }]
+    },
+    {
+      "name": "New Project",
+      "short_name": "New Project",
+      "description": "Create a new blank Formspec canvas",
+      "url": "./?action=new",
+      "icons": [{ "src": "logo.svg", "sizes": "any" }]
     }
   ]
 }

@@ -43,9 +43,13 @@ jobs:
         run: npm run test
 
       - name: Build Angular Application
-        run: npm run build -- --base-href /${{ github.event.repository.name }}/
+        # Sets base-href to /luanti-formspec-studio/ so all assets and routes load correctly on GitHub Pages
+        env:
+          NODE_OPTIONS: '--max-old-space-size=4096'
+        run: npm run build -- --base-href /luanti-formspec-studio/
 
       - name: SPA 404 Fallback
+        # Handles single-page app route refreshes
         run: cp dist/luanti-formspec-studio/browser/index.html dist/luanti-formspec-studio/browser/404.html
 
       - name: Upload Pages Artifact

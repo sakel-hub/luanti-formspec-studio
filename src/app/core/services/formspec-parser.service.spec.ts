@@ -55,4 +55,62 @@ describe('FormspecParserService', () => {
     expect(ast.children[0].name).toBe('submit');
     expect(ast.children[0].label).toBe('Save');
   });
+
+  it('serializes and parses modern Luanti elements (hypertip, model, button_url, allow_close)', () => {
+    const ast: FormspecAST = {
+      version: 11,
+      size: { w: 12, h: 9 },
+      allowClose: false,
+      styles: [],
+      children: [
+        {
+          id: 'm1',
+          type: 'model',
+          x: 1,
+          y: 1,
+          w: 3,
+          h: 4,
+          name: 'player_mesh',
+          mesh: 'character.b3d',
+          meshTextures: 'character.png',
+          meshRotation: '0,180',
+          animationSpeed: 30,
+        },
+        {
+          id: 'h1',
+          type: 'hypertip',
+          x: 4,
+          y: 1,
+          w: 3,
+          h: 1,
+          name: 'tip1',
+          tooltipText: '<global color=#00ff00>Item Info</global>',
+        },
+        {
+          id: 'u1',
+          type: 'button_url',
+          x: 4,
+          y: 3,
+          w: 3,
+          h: 0.8,
+          name: 'btn_docs',
+          label: 'Visit Docs',
+          url: 'https://luanti.org',
+        },
+      ],
+    };
+
+    const serialized = service.serialize(ast);
+    expect(serialized).toContain('formspec_version[11]');
+    expect(serialized).toContain('allow_close[false]');
+    expect(serialized).toContain('model[1,1;3,4;player_mesh;character.b3d;character.png;0,180;false;true;0,79;30]');
+    expect(serialized).toContain('hypertip[tip1;;15;tip1_tip;<global color=#00ff00>Item Info</global>]');
+    expect(serialized).toContain('button_url[4,3;3,0.8;btn_docs;Visit Docs;https://luanti.org]');
+
+    const parsed = service.parse(serialized);
+    expect(parsed.version).toBe(11);
+    expect(parsed.allowClose).toBe(false);
+    expect(parsed.children.some((c) => c.type === 'model')).toBe(true);
+    expect(parsed.children.some((c) => c.type === 'button_url')).toBe(true);
+  });
 });

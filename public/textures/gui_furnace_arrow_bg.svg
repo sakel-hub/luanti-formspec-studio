@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Subdued arrow outline for furnace / crafting progress -->
+  <path d="M12,18 L26,18 L26,12 L38,24 L26,36 L26,30 L12,30 Z" fill="#181820" stroke="#33333f" stroke-width="2"/>
+  <path d="M14,20 L24,20 L24,16 L34,24 L24,32 L24,28 L14,28 Z" fill="#2d2d3a"/>
+</svg>

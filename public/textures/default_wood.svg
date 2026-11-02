@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Wooden Planks -->
+  <rect width="64" height="64" fill="#a06030"/>
+  <rect x="0" y="0" width="64" height="15" fill="#b07040"/>
+  <rect x="0" y="16" width="64" height="15" fill="#a06030"/>
+  <rect x="0" y="32" width="64" height="15" fill="#b87848"/>
+  <rect x="0" y="48" width="64" height="16" fill="#985828"/>
+  <line x1="0" y1="15.5" x2="64" y2="15.5" stroke="#603010" stroke-width="1"/>
+  <line x1="0" y1="31.5" x2="64" y2="31.5" stroke="#603010" stroke-width="1"/>
+  <line x1="0" y1="47.5" x2="64" y2="47.5" stroke="#603010" stroke-width="1"/>
+  <!-- Nail dots -->
+  <circle cx="6" cy="8" r="1" fill="#402008"/>
+  <circle cx="58" cy="8" r="1" fill="#402008"/>
+  <circle cx="6" cy="24" r="1" fill="#402008"/>
+  <circle cx="58" cy="24" r="1" fill="#402008"/>
+  <circle cx="6" cy="40" r="1" fill="#402008"/>
+  <circle cx="58" cy="40" r="1" fill="#402008"/>
+  <circle cx="6" cy="56" r="1" fill="#402008"/>
+  <circle cx="58" cy="56" r="1" fill="#402008"/>
+</svg>

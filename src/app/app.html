@@ -1,18 +1,36 @@
-<div class="h-screen w-screen flex flex-col bg-[#121214] text-zinc-100 overflow-hidden">
+<div
+  class="h-screen w-screen flex flex-col bg-[#121214] text-zinc-100 overflow-hidden select-none"
+  [class.cursor-col-resize]="isResizing() !== null"
+>
   <!-- Top Global Header -->
   <app-header></app-header>
 
   <!-- Main Multi-Pane / Mobile Adaptive Workspace -->
   <main class="flex-1 min-h-0 relative flex overflow-hidden">
     <!-- DESKTOP / TABLET WORKSPACE (md:flex) -->
-    <div class="hidden md:flex w-full h-full overflow-hidden">
-      <!-- Left: Widget Palette -->
-      <aside class="w-64 h-full shrink-0">
-        <app-palette></app-palette>
+    <div class="hidden md:flex w-full h-full overflow-hidden relative">
+      <!-- Left: Widget Palette (Resizable & Scrollable) -->
+      <aside
+        class="h-full shrink-0 overflow-hidden flex flex-col bg-[#18181c]"
+        [style.width.px]="store.leftPanelWidth()"
+      >
+        <app-palette class="h-full w-full block overflow-hidden"></app-palette>
       </aside>
 
+      <!-- Left Resizer Splitter -->
+      <div
+        class="w-1.5 h-full cursor-col-resize bg-[#202026] hover:bg-emerald-500/80 active:bg-emerald-500 transition-colors shrink-0 flex items-center justify-center group relative z-20 select-none"
+        (mousedown)="startLeftResize($event)"
+        (dblclick)="resetLeftWidth()"
+        title="Drag to resize Palette (double-click to reset)"
+      >
+        <div
+          class="w-0.5 h-8 bg-zinc-600 group-hover:bg-white rounded-full transition-colors pointer-events-none"
+        ></div>
+      </div>
+
       <!-- Center: Formspec Canvas or Code View -->
-      <section class="flex-1 h-full min-w-0 relative">
+      <section class="flex-1 h-full min-w-0 relative overflow-hidden">
         @if (store.activeTab() === 'code') {
           <app-code-view></app-code-view>
         } @else {
@@ -20,9 +38,24 @@
         }
       </section>
 
-      <!-- Right: Property Inspector -->
-      <aside class="w-76 h-full shrink-0">
-        <app-inspector></app-inspector>
+      <!-- Right Resizer Splitter -->
+      <div
+        class="w-1.5 h-full cursor-col-resize bg-[#202026] hover:bg-emerald-500/80 active:bg-emerald-500 transition-colors shrink-0 flex items-center justify-center group relative z-20 select-none"
+        (mousedown)="startRightResize($event)"
+        (dblclick)="resetRightWidth()"
+        title="Drag to resize Inspector (double-click to reset)"
+      >
+        <div
+          class="w-0.5 h-8 bg-zinc-600 group-hover:bg-white rounded-full transition-colors pointer-events-none"
+        ></div>
+      </div>
+
+      <!-- Right: Property Inspector (Resizable & Scrollable) -->
+      <aside
+        class="h-full shrink-0 overflow-hidden flex flex-col bg-[#18181c]"
+        [style.width.px]="store.rightPanelWidth()"
+      >
+        <app-inspector class="h-full w-full block overflow-hidden"></app-inspector>
       </aside>
     </div>
 
@@ -41,12 +74,17 @@
       </div>
 
       <!-- Mobile Bottom Navigation Bar -->
-      <nav class="h-14 bg-[#18181c] border-t border-[#282830] flex items-center justify-around px-2 shrink-0 select-none text-[10px]">
+      <nav
+        class="h-14 bg-[#18181c] border-t border-[#282830] flex items-center justify-around px-2 shrink-0 select-none text-[10px]"
+        aria-label="Mobile Navigation"
+      >
         <button
           (click)="store.setActiveTab('canvas')"
           [class.text-emerald-400]="store.activeTab() === 'canvas'"
           [class.text-zinc-400]="store.activeTab() !== 'canvas'"
-          class="flex flex-col items-center gap-1 font-medium transition active:scale-95"
+          [attr.aria-current]="store.activeTab() === 'canvas' ? 'page' : null"
+          aria-label="Canvas View"
+          class="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] gap-1 font-medium transition active:scale-95"
         >
           <svg lucideLayout class="w-4 h-4"></svg>
           <span>Canvas</span>
@@ -56,7 +94,9 @@
           (click)="store.setActiveTab('palette')"
           [class.text-emerald-400]="store.activeTab() === 'palette'"
           [class.text-zinc-400]="store.activeTab() !== 'palette'"
-          class="flex flex-col items-center gap-1 font-medium transition active:scale-95"
+          [attr.aria-current]="store.activeTab() === 'palette' ? 'page' : null"
+          aria-label="Widget Palette"
+          class="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] gap-1 font-medium transition active:scale-95"
         >
           <svg lucidePlus class="w-4 h-4"></svg>
           <span>Widgets</span>
@@ -66,7 +106,9 @@
           (click)="store.setActiveTab('inspector')"
           [class.text-emerald-400]="store.activeTab() === 'inspector'"
           [class.text-zinc-400]="store.activeTab() !== 'inspector'"
-          class="flex flex-col items-center gap-1 font-medium transition active:scale-95"
+          [attr.aria-current]="store.activeTab() === 'inspector' ? 'page' : null"
+          aria-label="Properties Inspector"
+          class="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] gap-1 font-medium transition active:scale-95"
         >
           <svg lucideSliders class="w-4 h-4"></svg>
           <span>Properties</span>
@@ -76,7 +118,9 @@
           (click)="store.setActiveTab('code')"
           [class.text-emerald-400]="store.activeTab() === 'code'"
           [class.text-zinc-400]="store.activeTab() !== 'code'"
-          class="flex flex-col items-center gap-1 font-medium transition active:scale-95"
+          [attr.aria-current]="store.activeTab() === 'code' ? 'page' : null"
+          aria-label="Lua Code View"
+          class="flex flex-col items-center justify-center min-w-[48px] min-h-[44px] gap-1 font-medium transition active:scale-95"
         >
           <svg lucideCode class="w-4 h-4"></svg>
           <span>Lua Code</span>
@@ -87,4 +131,8 @@
 
   <!-- Modal Dialogs -->
   <app-template-modal></app-template-modal>
+  <app-settings-modal></app-settings-modal>
+  <app-shortcuts-dialog></app-shortcuts-dialog>
+  <app-help-dialog></app-help-dialog>
+  <app-share-dialog></app-share-dialog>
 </div>

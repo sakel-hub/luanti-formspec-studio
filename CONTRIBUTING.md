@@ -1,59 +1,109 @@
 # Contributing to Luanti Formspec Studio
 
-Thank you for your interest in contributing to **Luanti Formspec Studio**! We welcome bug reports, feature suggestions, documentation enhancements, and pull requests.
+Thank you for your interest in contributing to **Luanti Formspec Studio**! We welcome contributions of all kinds, including bug reports, feature requests, code enhancements, documentation improvements, and **translations**.
+
+---
+
+## 📑 Table of Contents
+- [Code of Conduct](#-code-of-conduct)
+- [Development Setup](#-development-setup)
+- [Contributing Translations](#-contributing-translations)
+  - [Overview of the i18n Architecture](#overview-of-the-i18n-architecture)
+  - [Option 1: Improving Existing Translations](#option-1-improving-existing-translations)
+  - [Option 2: Adding a New Language](#option-2-adding-a-new-language)
+  - [Option 3: Contributing Without Coding (GitHub Issues)](#option-3-contributing-without-coding-github-issues)
+- [Testing & Validation](#-testing--validation)
+- [Submitting a Pull Request](#-submitting-a-pull-request)
+
+---
+
+## 🤝 Code of Conduct
+Please be polite, constructive, and respectful to fellow contributors and maintainers. We aim to keep this community open and welcoming to everyone.
 
 ---
 
 ## 🛠️ Development Setup
 
 ### Prerequisites
-- **Node.js**: `>= 24.0.0` (matching `.nvmrc`)
+- **Node.js**: `>= 24.16.0` (matching `.nvmrc`)
 - **npm**: `>= 11.0.0`
-- **Git**: `>= 2.40.0`
+- **Git**
 
-### Initializing the Project
+### Installation
 ```bash
-# Clone the repository
+# 1. Clone your fork or the repository
 git clone https://github.com/sakel-hub/luanti-formspec-studio.git
 cd luanti-formspec-studio
 
-# Ensure correct Node version
+# 2. Ensure correct Node version
 nvm use
 
-# Install dependencies
-npm install
+# 3. Install dependencies
+npm ci
 
-# Launch development server
+# 4. Start the local development server
 npm start
 ```
-The app will be accessible at `http://localhost:4200/`.
+The application will be accessible at `http://localhost:4200/`.
 
 ---
 
-## 🧪 Testing & Validation Quality Gates
+## 🌍 Contributing Translations
 
-Before submitting any Pull Request, you must verify that all four mandatory quality gates pass:
+Luanti Formspec Studio supports multi-language localization. Translations reside in `src/app/core/i18n/locales/`.
 
-1. **Production Build Validation (Zero Compiler Errors)**:
-   ```bash
-   npm run build
-   ```
-2. **Automated Unit Tests**:
-   ```bash
-   npm test
-   ```
-3. **PWA Offline Build**:
-   ```bash
-   npm run serve:pwa
-   ```
-4. **Code Style & Formatting**:
-   Follow `.agents/rules/code-style-guide.md` and verify zero broken imports or TypeScript type errors.
+### Structure
+- `src/app/core/i18n/translation.types.ts`: TypeScript schema defining all required translation keys and interfaces.
+- `src/app/core/i18n/locales/en.ts`: English source dictionary (canonical source of truth).
+- `src/app/core/i18n/locales/de.ts`: German translation.
+- `src/app/core/i18n/locales/fr.ts`: French translation.
+- `src/app/core/i18n/locales/es.ts`: Spanish translation.
+- `src/app/core/i18n/locales/sk.ts`: Slovak translation.
+- `src/app/core/i18n/locales/ru.ts`: Russian translation.
+
+### Option 1: Improving Existing Translations
+1. Open the relevant file in `src/app/core/i18n/locales/<lang>.ts`.
+2. Update the text strings while preserving placeholder tokens like `{count}` or `{name}`.
+3. Test locally using the Language Switcher in the top header.
+4. Run `npm run test` and `npx tsc --noEmit` to verify type safety.
+
+### Option 2: Adding a New Language
+1. Add the new language code (e.g. `'it'`) to the `SupportedLanguage` type in `translation.types.ts`.
+2. Create `src/app/core/i18n/locales/<lang>.ts` implementing `TranslationSchema`.
+3. Register the new dictionary in `src/app/core/i18n/translation.service.ts`.
+
+### Option 3: Contributing via GitHub Issues
+Don't want to edit TypeScript code? Submit a translation directly using our [Translation Issue Template](https://github.com/sakel-hub/luanti-formspec-studio/issues/new?template=translation.yml).
 
 ---
 
-## 📜 Architectural Guidelines
+## 🧪 Testing & Validation
 
-- **Angular Signals Only**: State mutations must flow through Angular Signals (`signal`, `computed`, `effect`).
-- **DRY Formspec AST**: All parsing, AST models, and serializations must use `FormspecParserService`.
-- **Iconography**: Use `@lucide/angular` exclusively. Never introduce raw SVG markup or emoji buttons.
-- **Mobile-First**: Maintain responsive breakpoints and 44x44px minimum touch targets on mobile viewports.
+Before submitting any code changes, please ensure all automated tests and build checks pass:
+
+```bash
+# 1. Run unit test suite (Vitest)
+npm run test
+
+# 2. Verify strict TypeScript compilation
+npx tsc --noEmit
+
+# 3. Test production build
+npm run build
+```
+
+---
+
+## 🚀 Submitting a Pull Request
+
+1. Fork the repository and create a descriptive feature branch:
+   ```bash
+   git checkout -b feat/my-new-feature
+   ```
+2. Follow Conventional Commits:
+   - `feat(...)`: New features
+   - `fix(...)`: Bug fixes
+   - `docs(...)`: Documentation updates
+   - `refactor(...)`: Code refactoring without behavior change
+   - `test(...)`: Adding or updating tests
+3. Push to your fork and submit a Pull Request to `sakel-hub/luanti-formspec-studio:main`.

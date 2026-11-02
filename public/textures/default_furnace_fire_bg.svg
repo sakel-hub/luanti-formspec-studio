@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Dark slot background with inset bevel -->
+  <rect width="48" height="48" fill="#141418"/>
+  <rect x="2" y="2" width="44" height="44" fill="#1e1e24"/>
+  <!-- Fire Flame Silhouette -->
+  <path d="M24,6 C26,12 32,16 34,22 C36,28 34,34 30,38 C28,40 25,41 24,41 C23,41 20,40 18,38 C14,34 12,28 14,22 C16,16 22,12 24,6 Z" fill="#d97706" opacity="0.4"/>
+  <!-- Inner Flame Core -->
+  <path d="M24,14 C25,18 29,21 30,25 C31,29 30,33 27,36 C25.5,37.5 24.5,38 24,38 C23.5,38 22.5,37.5 21,36 C18,33 17,29 18,25 C19,21 23,18 24,14 Z" fill="#f59e0b" opacity="0.7"/>
+  <path d="M24,22 C24.5,24 26.5,26 27,29 C27.5,32 26.5,34 25,35.5 C24.5,36 24.2,36 24,36 C23.8,36 23.5,36 23,35.5 C21.5,34 20.5,32 21,29 C21.5,26 23.5,24 24,22 Z" fill="#fef08a" opacity="0.9"/>
+</svg>

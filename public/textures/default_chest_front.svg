@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Wooden chest body -->
+  <rect width="64" height="64" fill="#784824"/>
+  <rect x="2" y="2" width="60" height="60" fill="#8c582c"/>
+  <!-- Planks lines -->
+  <line x1="2" y1="20" x2="62" y2="20" stroke="#5c3418" stroke-width="2"/>
+  <line x1="2" y1="44" x2="62" y2="44" stroke="#5c3418" stroke-width="2"/>
+  <!-- Iron corner bands -->
+  <rect x="2" y="2" width="6" height="60" fill="#3a3a40"/>
+  <rect x="56" y="2" width="6" height="60" fill="#3a3a40"/>
+  <rect x="2" y="28" width="60" height="8" fill="#44444c"/>
+  <!-- Brass latch lock -->
+  <rect x="26" y="26" width="12" height="14" rx="2" fill="#d4af37" stroke="#997a15" stroke-width="1.5"/>
+  <circle cx="32" cy="31" r="2" fill="#332200"/>
+  <rect x="31" y="32" width="2" height="4" fill="#332200"/>
+</svg>

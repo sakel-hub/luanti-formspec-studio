@@ -15,6 +15,7 @@
 *.svg text eol=lf
 *.txt text eol=lf
 *.lua text eol=lf
+*.mt text eol=lf
 
 # Denote all binary files
 *.png binary
@@ -23,6 +24,8 @@
 *.gif binary
 *.webp binary
 *.ico binary
+*.sqlite binary
+*.db binary
 *.woff binary
 *.woff2 binary
 *.ttf binary
